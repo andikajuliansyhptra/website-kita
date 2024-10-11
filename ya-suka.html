@@ -80,6 +80,24 @@ main {
         <button>
         <a href="index.html" class="a-button">home</a>
         </button>
+        <input type="file" id="image-upload" accept="image/*">
+        <img id="image-preview" src="#" alt="Preview Gambar">
+        <script>
+            const imageUpload = document.getElementById('image-upload');
+            const imagePreview = document.getElementById('image-preview');
+
+             imageUpload.addEventListener('change', function() {
+                 if (this.files && this.files[0]) {
+                  const reader = new FileReader();
+
+                    reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    imagePreview.style.display = 'block';
+                    }
+                     reader.readAsDataURL(this.files[0]);
+                 }
+             });
+        </script>
     </header>
     <main>
         <div class="gallery">
