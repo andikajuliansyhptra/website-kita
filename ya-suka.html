@@ -82,22 +82,46 @@ main {
         </button>
         <input type="file" id="image-upload" accept="image/*">
         <img id="image-preview" src="#" alt="Preview Gambar">
+        
         <script>
             const imageUpload = document.getElementById('image-upload');
-            const imagePreview = document.getElementById('image-preview');
+        const imagePreview = document.getElementById('image-preview');
+        const saveButton = document.getElementById('save-image');
 
-             imageUpload.addEventListener('change', function() {
-                 if (this.files && this.files[0]) {
-                  const reader = new FileReader();
+        imageUpload.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
 
-                    reader.onload = function(e) {
+                reader.onload = function(e) {
                     imagePreview.src = e.target.result;
                     imagePreview.style.display = 'block';
-                    }
-                     reader.readAsDataURL(this.files[0]);
-                 }
-             });
-        </script>
+                };
+
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+
+        saveButton.addEventListener('click', function() {
+            const imageData = imagePreview.src;
+
+            if (imageData !== '#') {
+                
+                localStorage.setItem('savedImage', imageData);
+                alert('Gambar berhasil disimpan di LocalStorage!');
+            } else {
+                alert('Silakan unggah gambar terlebih dahulu.');
+            }
+        });
+            window.addEventListener('load', function() {
+            const savedImage = localStorage.getItem('savedImage');
+
+            if (savedImage) {
+                imagePreview.src = savedImage;
+                imagePreview.style.display = 'block'; 
+            }
+        });
+    </script>
+       
     </header>
     <main>
         <div class="gallery">
