@@ -80,7 +80,7 @@ main {
         <button>
         <a href="index.html" class="a-button">home</a>
         </button>
-    <form id="upload-form" enctype="multipart/form-data">
+     <form id="upload-form" enctype="multipart/form-data">
         <input type="file" id="image-input" accept="image/*">
         <button type="button" id="upload-button">Upload</button>
     </form>
@@ -88,43 +88,41 @@ main {
         <span>Pratinjau Gambar</span>
     </div>
         
-        
-        
         <script>
-            const imageUpload = document.getElementById('image-upload');
+        const imageInput = document.getElementById('image-input');
         const imagePreview = document.getElementById('image-preview');
-        const saveButton = document.getElementById('save-image');
+        const uploadButton = document.getElementById('upload-button');
+        const postedImages = document.getElementById('posted-images');
 
-        imageUpload.addEventListener('change', function() {
-            if (this.files && this.files[0]) {
+                imageInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
                 const reader = new FileReader();
-
                 reader.onload = function(e) {
-                    imagePreview.src = e.target.result;
-                    imagePreview.style.display = 'block';
+                    imagePreview.innerHTML = '<img src="' + e.target.result + '" alt="Image Preview">';
                 };
-
-                reader.readAsDataURL(this.files[0]);
-            }
-        });
-
-        saveButton.addEventListener('click', function() {
-            const imageData = imagePreview.src;
-
-            if (imageData !== '#') {
-                
-                localStorage.setItem('savedImage', imageData);
-                alert('Gambar berhasil disimpan di LocalStorage!');
+                reader.readAsDataURL(file);
             } else {
-                alert('Silakan unggah gambar terlebih dahulu.');
+                imagePreview.innerHTML = '<span>Pratinjau Gambar</span>';
             }
         });
-            window.addEventListener('load', function() {
-            const savedImage = localStorage.getItem('savedImage');
 
-            if (savedImage) {
-                imagePreview.src = savedImage;
-                imagePreview.style.display = 'block'; 
+        
+        uploadButton.addEventListener('click', function() {
+            const file = imageInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const newImage = document.createElement('img');
+                    newImage.src = e.target.result;
+                    newImage.alt = "Uploaded Image";
+                    newImage.style.maxWidth = '300px';
+                    newImage.style.margin = '10px';
+                    postedImages.appendChild(newImage);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                alert('Pilih gambar terlebih dahulu!');
             }
         });
     </script>
